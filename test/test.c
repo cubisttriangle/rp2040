@@ -145,7 +145,7 @@ int main() {
                         }
                         break;
                     } else {
-                        sleep_ms(100);
+                        sleep_ms(1000);
                         continue;
                     }
                 }
