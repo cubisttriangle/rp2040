@@ -66,9 +66,24 @@ void scan_bus() {
     printf("Done.\n");
 }
 
+int write_blocking(uint8_t addr, const uint8_t* buf, size_t len, bool no_stop) {
+    return i2c_write_blocking(i2c_default, addr, buf, len, no_stop);
+}
+
+int read_blocking(uint8_t addr, uint8_t* buf, size_t len, bool no_stop) {
+    return i2c_read_blocking(i2c_default, addr, buf, len, no_stop);
+}
+
+size_t get_read_available() {
+    return i2c_get_read_available(i2c_default);
+}
+
 const struct i2c_lib I2C_Lib = {
     .init = init,
     .addr_is_reserved = addr_is_reserved,
     .device_present_at = device_present_at,
-    .scan_bus = scan_bus
+    .scan_bus = scan_bus,
+    .write_blocking = write_blocking,
+    .read_blocking = read_blocking,
+    .get_read_available = get_read_available
 };
