@@ -1,0 +1,192 @@
+
+Example dump ZOE-M8Q:
+
+   $GNRMC,165541.00,A,3947.36621,N,10445.64247,W,0.277,,280522,,,A*7D
+   $GNVTG,,T,,M,0.277,N,0.513,K,A*38
+   $GNGGA,165541.00,3947.36621,N,10445.64247,W,1,05,3.02,1642.3,M,-21.8,M,,*4C
+   $GNGSA,A,3,17,06,19,03,01,,,,,,,,4.00,3.02,2.63*14
+   $GNGSA,A,3,,,,,,,,,,,,,4.00,3.02,2.63*1E
+   $GPGSV,2,1,08,01,06,036,20,02,20,204,12,03,13,065,28,06,57,172,26*7B
+   $GPGSV,2,2,08,11,19,197,16,17,56,042,28,19,74,354,26,30,03,161,*73
+   $GLGSV,1,1,00*65
+   $GNGLL,3947.36621,N,10445.64247,W,165541.00,A,A*69
+
+<$>: start delimiter
+<GN>: refers to GNSS (supercedes GP[s] from older standard)
+<XXX>: sentence type
+      <RMC>: Recommended minimum specific GPS/Transit data
+      <VTG>: Track made good and ground speed
+      <GGA>: Global Position System Fix Data
+      <GSA>: GPS DOP and active satellites
+      <GSV>: Satellites in view
+      <GLL>: Geographic position, latitude, and longitude (and time)
+      
+Example parsing:
+
+  srcs: 
+     https://w3.cs.jmu.edu/bernstdh/web/common/help/nmea-sentences.php,
+     https://docs.novatel.com/OEM7/Content/Logs/GPVTG.htm,
+     https://docs.novatel.com/OEM7/Content/Logs/GPGSA.htm?tocpath=Commands%20%2526%20Logs%7CLogs%7CGNSS%20Logs%7C_____63,
+
+  
+  msg: $GNRMC,165541.00,A,3947.36621,N,10445.64247,W,0.277,,280522,,,A*7D
+  
+             <$>: start delimiter
+         <GNRMC>: GNSS recommended minimum specific GPS/Transit data
+     <165541.00>: 16:55:41.00 UTC
+             <A>: position stats (A for valid, V for invalid)
+    <3947.36621>: Latitude (in DDMM.MMM format)
+             <N>: Latitude compass direction (North)
+   <10445.64247>: Longitude (in DDMM.MMM format)
+             <W>: Longitude compass direction (West)
+         <0.277>: Speed (in knots per hour)
+              <>: Heading
+        <280522>: Date (DDMMYY) May 28 2022
+              <>: Magnetic variation
+              <>: Magnetic variation direction
+             <A>: 
+           <*7D>: Checksum validation (in hexadecimal)
+          
+  msg: $GNVTG,,T,,M,0.277,N,0.513,K,A*38
+  
+             <$>: start delimiter
+         <GNVTG>: GNSS Track made good and ground speed
+              <>: Track made good, degress true, x.x, ex: 24.168
+             <T>: True track indicator (only value is T?)
+              <>: Track made good, degrees magnetic, TrackMag = Track true + (MAGVAR correction), ex: 24.168
+             <M>: Magnetic track indicator (only value is M?)
+         <0.277>: Speed over ground (in knots per hour)
+             <N>: Nautical speed indicator (N = knots)
+         <0.513>: Speed, kmph
+             <K>: Speed indicator (K = kmph)
+             <A>: 
+           <*38>: Checksum validation value (in hexadecimal)
+     
+
+  msg: $GNGGA,165541.00,3947.36621,N,10445.64247,W,1,05,3.02,1642.3,M,-21.8,M,,*4C
+  
+             <$>: start delimiter
+         <GNGGA>: GNSS GPS Fix data
+     <165541.00>: 16:55:41.00 UTC
+    <3947.36621>: Latitude (in DDMM.MMM format)
+             <N>: Latitude compass direction (North)
+   <10445.64247>: Longitude (in DDMM.MMM format)
+             <W>: Longitude compass direction (West)
+             <1>: Fix type (0 for no fix, 1 for GPS, 2 for DGPS)
+            <05>: Number of satellites used for fix
+          <3.02>: Horizontal dilution of precision (HDOP) lower is better, 3 is good
+        <1642.3>: Altitude above mean sea level
+             <M>: Altitude units (M for meters)
+         <-21.8>: Height of mean sea level above WGS-84 earth ellipsoid
+             <M>: Units of the above geoid seperation (M for meters)
+              <>: Time since last differential correction (ignored if inactive)
+           <*4C>: Checksum validation value (in hexadecimal)
+           
+   msg: $GNGSA,A,3,17,06,19,03,01,,,,,,,,4.00,3.02,2.63*14
+  
+             <$>: start delimiter
+         <GNGSA>: GNSS GPS Dilution of Precision (GDOP) and active satellites
+             <A>: Mode: (A: automatic 2D/3D, M: manual, forced to operate in 2D or 3D)
+             <3>: Mode: (1: fix not available, 2: 2D, 3: 3D)
+            <17>: 
+            <06>: 
+            <19>: 
+            <03>: 
+            <01>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+          <4.00>: Position dilution of precision (PDOP)
+          <3.02>: Horizontal dilution of precision (HDOP)
+          <2.63>: Vertical dilution of precision (VDOP)
+           <*14>: Checksum validation value (in hexadecimal)
+       
+   msg: $GNGSA,A,3,,,,,,,,,,,,,4.00,3.02,2.63*1E
+   
+             <$>: start delimiter
+         <GNGSA>: GNSS GPS Dilution of Precision (GDOP) and active satellites
+             <A>: Mode: (A: automatic 2D/3D, M: manual, forced to operate in 2D or 3D)
+             <3>: Mode: (1: fix not available, 2: 2D, 3: 3D)
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+              <>: 
+          <4.00>: Position dilution of precision (PDOP)
+          <3.02>: Horizontal dilution of precision (HDOP)
+          <2.63>: Vertical dilution of precision (VDOP)
+           <*1E>: Checksum validation value (in hexadecimal)
+       
+   msg: $GPGSV,2,1,08,01,06,036,20,02,20,204,12,03,13,065,28,06,57,172,26*7B
+   
+             <$>: start delimiter
+         <GPGSV>: GPS Satellites in view
+             <2>: 
+             <1>: 
+            <08>: 
+            <01>: 
+            <06>: 
+           <036>: 
+            <20>:
+            <02>:
+            <20>:
+           <204>:
+            <12>:
+            <03>:
+            <13>:
+           <065>:
+            <28>:
+            <06>:
+            <57>:
+           <172>:
+            <26>: 
+           <*7B>: Checksum validation value (in hexadecimal)
+       
+   msg: $GPGSV,2,2,08,11,19,197,16,17,56,042,28,19,74,354,26,30,03,161,*73
+   
+             <$>: start delimiter
+         <GPGSV>: GPS Satellites in view
+             <2>: 
+             <2>: 
+            <08>: 
+            <11>: 
+            <19>: 
+           <197>: 
+            <16>:
+            <17>:
+            <56>:
+           <042>:
+            <28>:
+            <19>:
+            <74>:
+           <354>:
+            <26>:
+            <30>:
+            <03>:
+           <161>:
+           <*73>: Checksum validation value (in hexadecimal)
+       
+   msg: $GNGLL,3947.36621,N,10445.64247,W,165541.00,A,A*69
+       
+             <$>: start delimiter
+         <GNGLL>: GNSS Geographic position, latitude, and longitude (and time)
+    <3947.36621>: Latitude (in DDMM.MMM format)
+             <N>: Latitude compass direction (North)
+   <10445.64247>: Longitude (in DDMM.MMM format)
+             <W>: Longitude compass direction (West)
+     <165541.00>: 16:55:41.00 UTC
+             <A>: 
+             <A>: 
+           <*69>: Checksum validation value (in hexadecimal)
+       
