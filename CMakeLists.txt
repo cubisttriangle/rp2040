@@ -20,5 +20,6 @@ add_compile_options(-Wall
         -Wno-maybe-uninitialized
         )
 
+add_subdirectory(constant_pwm)
 add_subdirectory(sweeping_pwm)
 add_subdirectory(test)
